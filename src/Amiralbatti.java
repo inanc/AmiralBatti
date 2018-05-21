@@ -66,7 +66,7 @@ public class Amiralbatti {
 			Destroyer des = new Destroyer(gridler);
 			Submarine sub = new Submarine(gridler);
 
-			int gunsayisi = 7, rocketsayisi = 10, bombsayisi = 2;
+			int gunsayisi = 7, rocketsayisi = 1, bombsayisi = 2;
 			int gun = 0, rocket = 0, bomb = 0;
 			int jeksi, ieksi, jarti, iarti;
 
