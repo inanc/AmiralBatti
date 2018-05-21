@@ -2,11 +2,11 @@ import java.util.Random;
 
 public class Submarine {
 
-	int x1, y1, x2, y2;
-
+	private int x1, y1, x2, y2;
+	Random rnd = new Random();
 	public Submarine(Grid[][] gridler) {
 
-		Random rnd = new Random();
+		
 		int ax1 = 110;
 		int ay1 = 110;
 

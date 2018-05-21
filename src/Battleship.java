@@ -2,10 +2,10 @@ import java.util.Random;
 
 public class Battleship {
 
-	int x1, y1, x2, y2, x3, y3, x4, y4;
-
+	private int x1, y1, x2, y2, x3, y3, x4, y4;
+	Random rnd = new Random();
 	public Battleship(Grid[][] gridler) {
-		Random rnd = new Random();
+	
 		int ax1 = 110;
 		int ay1 = 110;
 		ax1 = rnd.nextInt(8);

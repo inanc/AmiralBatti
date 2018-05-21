@@ -1,11 +1,11 @@
 import java.util.Random;
 
 public class Destroyer {
-	int x1, y1, x2, y2, x3, y3;
-
+	private int x1, y1, x2, y2, x3, y3;
+	Random rnd = new Random();
 	public Destroyer(Grid[][] gridler) {
 
-		Random rnd = new Random();
+	
 		int ax1 = 110;
 		int ay1 = 110;
 		int x = rnd.nextInt(2);

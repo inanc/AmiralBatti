@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Boat {
 
-	int x1, y1;
+	private int x1, y1;
 
 	Random rnd = new Random();
 
