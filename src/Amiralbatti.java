@@ -1,4 +1,3 @@
-
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -32,7 +31,7 @@ public class Amiralbatti {
 		boolean devam = true;
 		String username = "";
 
-		while (giris) {
+		while (giris) { // login
 			System.out.println("GAME MENU");
 			System.out.println("1.Login \n2.Create new user\n3.Exit");
 			int usertype = scanner.nextInt();
@@ -51,7 +50,7 @@ public class Amiralbatti {
 				System.out.print("New Username:");
 				username = scanner.next();
 				boolean s = kaydetme(username);
-				level = 1;
+				level = 0;
 				if (s == true) {
 					giris = false;
 				}
@@ -61,7 +60,7 @@ public class Amiralbatti {
 			}
 		}
 
-		while (level >= 0 && level < 2) {
+		while (level >= 0 && level < 2) {// game easy mode
 			Gridolustur(10);
 			Boat boat = new Boat(gridler);
 			Destroyer des = new Destroyer(gridler);
@@ -75,14 +74,13 @@ public class Amiralbatti {
 			boolean b2 = false;
 			boolean su = false;
 			boolean de = false;
-			boolean battle = false; 
-			
+			boolean battle = false;
 
-			while (devam) { 
+			while (devam) {
 
 				oyunTahtasi(10);
 
-				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {
+				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {// oyun biter.
 
 					if (b2 == false || su == false || de == false) {
 						devam = false;
@@ -124,7 +122,7 @@ public class Amiralbatti {
 					iarti = i1;
 				}
 
-				if (name == 0) {
+				if (name == 0) {// gun
 
 					if (gun < gunsayisi) {
 						gridler[i1][j1].setVuruldu(true);
@@ -139,7 +137,7 @@ public class Amiralbatti {
 					} else {
 						System.out.println("Gun kalmadı.");
 					}
-				} else if (name == 1) {
+				} else if (name == 1) {// bomb
 					if (bomb < bombsayisi) {
 						gridler[i1][jeksi].setVuruldu(true);
 						gridler[i1][j1].setVuruldu(true);
@@ -157,7 +155,7 @@ public class Amiralbatti {
 						System.out.println("bomb kalmadı");
 					}
 
-				} else if (name == 2) {
+				} else if (name == 2) {// rocket
 					if (rocket < rocketsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gridler[i1][jeksi].setVuruldu(true);
@@ -182,8 +180,7 @@ public class Amiralbatti {
 				}
 
 				if (b2 == false) {
-
-					b2 = boat.hepsi(gridler);
+					b2 = boat.hepsi(gridler);// boat vuruldu ise x yapar.
 				}
 				if (su == false) {
 					su = sub.hepsi(gridler);
@@ -191,29 +188,24 @@ public class Amiralbatti {
 				if (de == false) {
 					de = des.hepsi(gridler);
 				}
-
 				if (b2 == true && su == true && de == true) {
 					System.out.println("Congratulations. the level has increased.");
 					oyunTahtasi(10);
 					level = level + 1;
-
 					uzerineyazma(username, level);
-
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
 					if (acontinue.equals("q")) {
 						level = -1;
 					}
-
 					break;
 				}
 
 			}
 
 		}
-		while (level >= 2 && level < 5) {
+		while (level >= 2 && level < 5) {// normal mode
 			Gridolustur(15);
-
 			Boat boat = new Boat(gridler);
 			Boat boat2 = new Boat(gridler);
 			Destroyer des = new Destroyer(gridler);
@@ -229,18 +221,18 @@ public class Amiralbatti {
 			boolean su = false;
 			boolean de = false;
 			boolean battle = false;
-			while (devam) {//////////////
+			while (devam) {
 
 				oyunTahtasi(15);
-
+				// atış kalmadı ve hedeflerın tamamı vurulmadı ise
 				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {
 					if (b2 == false || su == false || de == false || b1 == false || battle == false) {
 
 						devam = false;
 						System.out.println("no shot left. Game over");
 
-						uzerineyazma(username, level);
-						level = -1;
+						uzerineyazma(username, level);// dosyaya kaydet
+						level = -1;// oyun biter
 						break;
 					}
 				}
@@ -274,14 +266,12 @@ public class Amiralbatti {
 				}
 
 				if (name == 0) {
-
-					if (gun < gunsayisi) {
+					if (gun < gunsayisi) {// gun varmı
 						gridler[i1][j1].setVuruldu(true);
 						gun = gun + 1;
 						System.out.println(gun);
 						if (gridler[i1][j1].getDeger() == 's') {
 							System.out.println("Hit!");
-
 						} else {
 							System.out.println("İnvalid Hit");
 						}
@@ -289,7 +279,6 @@ public class Amiralbatti {
 						System.out.println("Gun kalmadı.");
 					}
 				} else if (name == 1) {
-
 					if (bomb < bombsayisi) {
 						gridler[i1][jeksi].setVuruldu(true);
 						gridler[i1][j1].setVuruldu(true);
@@ -308,7 +297,6 @@ public class Amiralbatti {
 					}
 
 				} else if (name == 2) {
-
 					if (rocket < rocketsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gridler[i1][jeksi].setVuruldu(true);
@@ -329,9 +317,7 @@ public class Amiralbatti {
 					} else {
 						System.out.println("Rocket kalmadı");
 					}
-
 				}
-
 				if (battle == false) {
 					battle = bir.hepsi(gridler);
 				}
@@ -339,7 +325,6 @@ public class Amiralbatti {
 					b1 = boat2.hepsi(gridler);
 				}
 				if (b2 == false) {
-
 					b2 = boat.hepsi(gridler);
 				}
 				if (su == false) {
@@ -351,25 +336,22 @@ public class Amiralbatti {
 
 				if (battle == true && b1 == true && b2 == true && su == true && de == true) {
 					System.out.println("Congratulations. the level has increased.");
+					oyunTahtasi(15);
 					level = level + 1;
 
-					uzerineyazma(username, level);
+					uzerineyazma(username, level);// kaydet
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
-					if (acontinue.equals("c")) {
-
-					} else {
+					if (acontinue.equals("q")) {
 						level = -1;
 					}
-
 					break;
 				}
 
 			}
 
 		}
-		if (level >= 5) { // hard
-
+		while (level >= 5) { // hard level
 			Gridolustur(20);
 			Boat boat = new Boat(gridler);
 			Boat boat2 = new Boat(gridler);
@@ -431,7 +413,6 @@ public class Amiralbatti {
 				}
 
 				if (name == 0) {
-
 					if (gun < gunsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gun = gun + 1;
@@ -446,7 +427,6 @@ public class Amiralbatti {
 						System.out.println("no gun left.");
 					}
 				} else if (name == 1) {
-
 					if (bomb < bombsayisi) {
 						gridler[i1][jeksi].setVuruldu(true);
 						gridler[i1][j1].setVuruldu(true);
@@ -463,9 +443,7 @@ public class Amiralbatti {
 					} else {
 						System.out.println("no bomb left");
 					}
-
 				} else if (name == 2) {
-
 					if (rocket < rocketsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gridler[i1][jeksi].setVuruldu(true);
@@ -506,15 +484,14 @@ public class Amiralbatti {
 				}
 
 				if (battle == true && b1 == true && b2 == true && su == true && de == true) {
-					System.out.print("Congratulations. the level has increased.");
+					System.out.println("Congratulations. the level has increased.");
+					oyunTahtasi(15);
 					level = level + 1;
 
 					uzerineyazma(username, level);
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
-					if (acontinue.equals("c")) {
-
-					} else {
+					if (acontinue.equals("q")) {
 						level = -1;
 					}
 					break;
@@ -525,7 +502,7 @@ public class Amiralbatti {
 
 	}
 
-	public static void uzerineyazma(String username, int level) {
+	public static void uzerineyazma(String username, int level) {// kayıt etme
 
 		int levelyazma = -1;
 
@@ -544,7 +521,6 @@ public class Amiralbatti {
 			 */
 			if (level >= 0 && level < 2) {
 				mode = "Easy";
-
 				levelyazma = level;
 			} else if (level >= 2 && level < 5) {
 				mode = "Normal";
@@ -573,7 +549,7 @@ public class Amiralbatti {
 
 	}
 
-	public static int okuma(String username) {
+	public static int okuma(String username) {// dosyadan okuma
 
 		int level = -1;
 		try (Scanner scanner = new Scanner(new FileReader("AmiralBattiInfo.txt"))) {
@@ -602,11 +578,6 @@ public class Amiralbatti {
 						level = foo + 5;
 					}
 
-					// System.out.println(array[0]);
-
-					// System.out.println(" Bilgisi: " + user_bilgisi);
-
-					// System.out.println(foo);
 					System.out.println(level);
 					return level;
 
@@ -623,7 +594,7 @@ public class Amiralbatti {
 		return -1;
 	}
 
-	public static boolean kaydetme(String newusername) {
+	public static boolean kaydetme(String newusername) {// new user olusturma
 
 		if (okuma(newusername) != -1) {
 			System.out.println("Already exists");
@@ -659,7 +630,7 @@ public class Amiralbatti {
 		return true;
 	}
 
-	public static void oyunTahtasi(int boyut) {
+	public static void oyunTahtasi(int boyut) {// ekrana yazdırma
 		System.out.print("   ");
 		for (int i = 0; i < boyut; i++) {
 			if (i < 9) {
@@ -678,7 +649,7 @@ public class Amiralbatti {
 
 			for (int j = 0; j < boyut; j++) {
 				// gridler[i][j].isVuruldu()==
-				if (true) {
+				if (gridler[i][j].isVuruldu() == true) {
 
 					System.out.print(gridler[i][j].getDeger() + "  ");
 
