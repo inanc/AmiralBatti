@@ -85,7 +85,7 @@ public class Amiralbatti {
 					if (b2 == false || su == false || de == false) {
 						devam = false;
 
-						System.out.println("no shot left. Game over");
+						System.out.println("No shot left. Game over");
 
 						uzerineyazma(username, level);
 						level = -1;
@@ -96,7 +96,7 @@ public class Amiralbatti {
 				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
 				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
 				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
-				System.out.print("level: " + level + " Weapon and x,y coordinate:");
+				System.out.print("Weapon and x,y coordinate:");
 				int name = scanner.nextInt();
 				int i1 = scanner.nextInt();
 				int j1 = scanner.nextInt();
@@ -127,7 +127,7 @@ public class Amiralbatti {
 					if (gun < gunsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gun = gun + 1;
-						System.out.println(gun);
+						//System.out.println(gun);
 						if (gridler[i1][j1].getDeger() == 's') {
 							System.out.println("Hit!");
 
@@ -135,7 +135,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("Gun kalmadı.");
+						System.out.println("Gun is over.");
 					}
 				} else if (name == 1) {// bomb
 					if (bomb < bombsayisi) {
@@ -152,7 +152,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("bomb kalmadı");
+						System.out.println("The bomb is over.");
 					}
 
 				} else if (name == 2) {// rocket
@@ -174,7 +174,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("Rocket kalmadı");
+						System.out.println("The Rocket is over.");
 					}
 
 				}
@@ -229,7 +229,7 @@ public class Amiralbatti {
 					if (b2 == false || su == false || de == false || b1 == false || battle == false) {
 
 						devam = false;
-						System.out.println("no shot left. Game over");
+						System.out.println("No shot left. Game over");
 
 						uzerineyazma(username, level);// dosyaya kaydet
 						level = -1;// oyun biter
@@ -239,7 +239,7 @@ public class Amiralbatti {
 				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
 				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
 				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
-				System.out.print("level: " + level + " Weapon and x,y coordinate:");
+				System.out.print("Weapon and x,y coordinate:");
 				int name = scanner.nextInt();
 				int i1 = scanner.nextInt();
 				int j1 = scanner.nextInt();
@@ -269,14 +269,14 @@ public class Amiralbatti {
 					if (gun < gunsayisi) {// gun varmı
 						gridler[i1][j1].setVuruldu(true);
 						gun = gun + 1;
-						System.out.println(gun);
+						//System.out.println(gun);
 						if (gridler[i1][j1].getDeger() == 's') {
 							System.out.println("Hit!");
 						} else {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("Gun kalmadı.");
+						System.out.println("The Gun is over..");
 					}
 				} else if (name == 1) {
 					if (bomb < bombsayisi) {
@@ -293,7 +293,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("bomb kalmadı");
+						System.out.println("The bomb is over.");
 					}
 
 				} else if (name == 2) {
@@ -315,7 +315,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("Rocket kalmadı");
+						System.out.println("The Rocket is over.");
 					}
 				}
 				if (battle == false) {
@@ -376,7 +376,7 @@ public class Amiralbatti {
 				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {
 					if (b2 == false || su == false || de == false || b1 == false || battle == false) {
 						devam = false;
-						System.out.println("no shot left. Game over");
+						System.out.println("No shot left. Game over");
 
 						uzerineyazma(username, level);
 						level = -1;
@@ -387,7 +387,7 @@ public class Amiralbatti {
 				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
 				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
 				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
-				System.out.print("level: " + level + " Weapon and x,y coordinate:");
+				System.out.print(" Weapon and x,y coordinate:");
 				int name = scanner.nextInt();
 				int i1 = scanner.nextInt();
 				int j1 = scanner.nextInt();
@@ -416,7 +416,6 @@ public class Amiralbatti {
 					if (gun < gunsayisi) {
 						gridler[i1][j1].setVuruldu(true);
 						gun = gun + 1;
-						System.out.println(gun);
 						if (gridler[i1][j1].getDeger() == 's') {
 							System.out.println("Hit!");
 
@@ -462,7 +461,7 @@ public class Amiralbatti {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("Rocket kalmadı");
+						System.out.println("The Rocket is over.");
 					}
 
 				}
@@ -568,7 +567,7 @@ public class Amiralbatti {
 					String part2 = parts[1].substring(0, 1);// cıktısı 1
 					int foo = Integer.parseInt(part2);
 
-					System.out.println(modeokuma);
+					//System.out.println(modeokuma);
 
 					if (modeokuma.equals("Easy")) {
 						level = foo;
@@ -578,7 +577,7 @@ public class Amiralbatti {
 						level = foo + 5;
 					}
 
-					System.out.println(level);
+					//System.out.println(level);
 					return level;
 
 				}
