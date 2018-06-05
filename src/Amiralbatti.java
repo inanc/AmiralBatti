@@ -13,9 +13,9 @@ public class Amiralbatti {
 
 	public static Grid[][] gridler = new Grid[20][20];
 
-	public static void Gridolustur(int gridx) { // baslangıcta tamamı - olan grid olusturulur.
-		for (int i = 0; i < gridx; i++) {
-			for (int j = 0; j < gridx; j++) {
+	public static void gridOlustur(int gridSayisi) { // baslangıcta tamamı - olan grid olusturulur.
+		for (int i = 0; i < gridSayisi; i++) {
+			for (int j = 0; j < gridSayisi; j++) {
 				gridler[i][j] = new Grid('-');
 			}
 		}
@@ -27,11 +27,11 @@ public class Amiralbatti {
 
 		int level = -1;
 
-		boolean giris = true;
+		boolean girisMenusu = true;
 		boolean devam = true;
 		String username = "";
 
-		while (giris) { // login
+		while (girisMenusu) { // login
 			System.out.println("GAME MENU");
 			System.out.println("1.Login \n2.Create new user\n3.Exit");
 			int usertype = scanner.nextInt();
@@ -39,9 +39,9 @@ public class Amiralbatti {
 			if (usertype == 1) {
 				System.out.print("Enter Username:");
 				username = scanner.next();
-				level = okuma(username);
+				level = dosyadanOkuma(username);
 				if (level >= 0) {
-					giris = false;
+					girisMenusu = false;// menüden cık
 				} else {
 					System.out.println("Wrong username.Try again.");
 				}
@@ -49,86 +49,86 @@ public class Amiralbatti {
 			} else if (usertype == 2) {
 				System.out.print("New Username:");
 				username = scanner.next();
-				boolean s = kaydetme(username);
-				level = 0;
-				if (s == true) {
-					giris = false;
+				boolean kayitBasarili = dosyayaKullaniciKaydetme(username);
+				level = 0;// yeni kullanıcının baslangic leveli
+				if (kayitBasarili == true) {
+					girisMenusu = false;
 				}
 
-			} else {
+			} else {// exit
 				break;
 			}
 		}
 
 		while (level >= 0 && level < 2) {// game easy mode
-			Gridolustur(10);
-			Boat boat = new Boat(gridler);
-			Destroyer des = new Destroyer(gridler);
-			Submarine sub = new Submarine(gridler);
+			gridOlustur(10);
+			Boat boat = new Boat(gridler, 1);// 1=easy mode
+			Destroyer des = new Destroyer(gridler, 1);
+			Submarine sub = new Submarine(gridler, 1);
 
-			int gunsayisi = 7, rocketsayisi = 1, bombsayisi = 2;
-			int gun = 0, rocket = 0, bomb = 0;
-			int jeksi, ieksi, jarti, iarti;
+			int leveldekiToplamGunSayisi = 7, leveldekiToplamRocketSayisi = 1, leveldekiToplambombSayisi = 2;
+			int kullanilanGunSayisi = 0, kullanilanRocketSayisi = 0, kullanilanBombSayisi = 0;
+			int jBirEksi, iBirEksi, jBirArti, iBirArti;
 
-			boolean b1 = false;
-			boolean b2 = false;
-			boolean su = false;
-			boolean de = false;
-			boolean battle = false;
+			boolean boatHepsiVuruldu = false;
+			boolean submarineHepsiVuruldu = false;
+			boolean destroyerHepsiVuruldu = false;
 
-			while (devam) {
+			while (devam) {// level
 
 				oyunTahtasi(10);
 
-				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {// oyun biter.
+				if (kullanilanRocketSayisi >= leveldekiToplamRocketSayisi
+						&& kullanilanGunSayisi >= leveldekiToplamGunSayisi
+						&& kullanilanBombSayisi >= leveldekiToplambombSayisi) {// oyun biter.
 
-					if (b2 == false || su == false || de == false) {
+					if (boatHepsiVuruldu == false || submarineHepsiVuruldu == false || destroyerHepsiVuruldu == false) {
 						devam = false;
 
 						System.out.println("No shot left. Game over");
 
-						uzerineyazma(username, level);
+						dosyayaKayıtEtme(username, level);
 						level = -1;
 
 						break;
 					}
 				}
-				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
-				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
-				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
+				System.out.println("0.Gun Shot: " + (leveldekiToplamGunSayisi - kullanilanGunSayisi));
+				System.out.println("1.Hand Bomb: " + (leveldekiToplambombSayisi - kullanilanBombSayisi));
+				System.out.println("2.Rocket: " + (leveldekiToplamRocketSayisi - kullanilanRocketSayisi));
 				System.out.print("Weapon and x,y coordinate:");
-				int name = scanner.nextInt();
-				int i1 = scanner.nextInt();
-				int j1 = scanner.nextInt();
+				int weaponName = scanner.nextInt();
+				int iKoordinati = scanner.nextInt();
+				int jKoordinati = scanner.nextInt();
 
-				if (j1 > 0) {
-					jeksi = j1 - 1;
+				if (jKoordinati > 0) {
+					jBirEksi = jKoordinati - 1;
 				} else {
-					jeksi = j1;
+					jBirEksi = jKoordinati;
 				}
-				if (j1 < 9) {
-					jarti = j1 + 1;
+				if (jKoordinati < 9) {
+					jBirArti = jKoordinati + 1;
 				} else {
-					jarti = j1;
+					jBirArti = jKoordinati;
 				}
-				if (i1 > 0) {
-					ieksi = i1 - 1;
+				if (iKoordinati > 0) {
+					iBirEksi = iKoordinati - 1;
 				} else {
-					ieksi = i1;
+					iBirEksi = iKoordinati;
 				}
-				if (i1 < 9) {
-					iarti = i1 + 1;
+				if (iKoordinati < 9) {
+					iBirArti = iKoordinati + 1;
 				} else {
-					iarti = i1;
+					iBirArti = iKoordinati;
 				}
 
-				if (name == 0) {// gun
+				if (weaponName == 0) {// gun
 
-					if (gun < gunsayisi) {
-						gridler[i1][j1].setVuruldu(true);
-						gun = gun + 1;
-						//System.out.println(gun);
-						if (gridler[i1][j1].getDeger() == 's') {
+					if (kullanilanGunSayisi < leveldekiToplamGunSayisi) {// gun kaldımı
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						kullanilanGunSayisi = kullanilanGunSayisi + 1;
+						// System.out.println(gun);
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -137,15 +137,16 @@ public class Amiralbatti {
 					} else {
 						System.out.println("Gun is over.");
 					}
-				} else if (name == 1) {// bomb
-					if (bomb < bombsayisi) {
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][j1].setVuruldu(true);
+				} else if (weaponName == 1) {// bomb
+					if (kullanilanBombSayisi < leveldekiToplambombSayisi) {
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
 
-						gridler[i1][jarti].setVuruldu(true);
-						bomb = bomb + 1;
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's') {
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						kullanilanBombSayisi = kullanilanBombSayisi + 1;
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -155,19 +156,21 @@ public class Amiralbatti {
 						System.out.println("The bomb is over.");
 					}
 
-				} else if (name == 2) {// rocket
-					if (rocket < rocketsayisi) {
-						gridler[i1][j1].setVuruldu(true);
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][jarti].setVuruldu(true);
-						gridler[iarti][j1].setVuruldu(true);
-						gridler[ieksi][j1].setVuruldu(true);
+				} else if (weaponName == 2) {// rocket
+					if (kullanilanRocketSayisi < leveldekiToplamRocketSayisi) {
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						gridler[iBirArti][jKoordinati].setVuruldu(true);
+						gridler[iBirEksi][jKoordinati].setVuruldu(true);
 
-						rocket = rocket + 1;
+						kullanilanRocketSayisi = kullanilanRocketSayisi + 1;
 
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's' || gridler[iarti][j1].getDeger() == 's'
-								|| gridler[ieksi][j1].getDeger() == 's') {
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's'
+								|| gridler[iBirArti][jKoordinati].getDeger() == 's'
+								|| gridler[iBirEksi][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -179,20 +182,20 @@ public class Amiralbatti {
 
 				}
 
-				if (b2 == false) {
-					b2 = boat.hepsi(gridler);// boat vuruldu ise x yapar.
+				if (boatHepsiVuruldu == false) {
+					boatHepsiVuruldu = boat.hepsiVuruldumu(gridler);// boat vuruldu ise x yapar.
 				}
-				if (su == false) {
-					su = sub.hepsi(gridler);
+				if (submarineHepsiVuruldu == false) {
+					submarineHepsiVuruldu = sub.hepsiVuruldumu(gridler);
 				}
-				if (de == false) {
-					de = des.hepsi(gridler);
+				if (destroyerHepsiVuruldu == false) {
+					destroyerHepsiVuruldu = des.hepsiVuruldumu(gridler);
 				}
-				if (b2 == true && su == true && de == true) {
+				if (boatHepsiVuruldu == true && submarineHepsiVuruldu == true && destroyerHepsiVuruldu == true) {
 					System.out.println("Congratulations. the level has increased.");
 					oyunTahtasi(10);
 					level = level + 1;
-					uzerineyazma(username, level);
+					dosyayaKayıtEtme(username, level);
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
 					if (acontinue.equals("q")) {
@@ -205,72 +208,76 @@ public class Amiralbatti {
 
 		}
 		while (level >= 2 && level < 5) {// normal mode
-			Gridolustur(15);
-			Boat boat = new Boat(gridler);
-			Boat boat2 = new Boat(gridler);
-			Destroyer des = new Destroyer(gridler);
-			Submarine sub = new Submarine(gridler);
+			gridOlustur(15);
+			Boat boat = new Boat(gridler, 2);
+			Boat boat2 = new Boat(gridler, 2);
+			Destroyer des = new Destroyer(gridler, 2);
+			Submarine sub = new Submarine(gridler, 2);
+			Battleship bir = new Battleship(gridler, 2);
+			int leveldekiToplamGunSayisi = 10, leveldekiToplamRocketSayisi = 1, leveldekiToplambombSayisi = 3;
+			int kullanilanGunSayisi = 0, kullanilanRocketSayisi = 0, kullanilanBombSayisi = 0;
 
-			Battleship bir = new Battleship(gridler);
-			int gunsayisi = 10, rocketsayisi = 1, bombsayisi = 3;
-			int gun = 0, rocket = 0, bomb = 0;
-			int jeksi, ieksi, jarti, iarti;
+			int jBirEksi, iBirEksi, jBirArti, iBirArti;
 
-			boolean b1 = false;
-			boolean b2 = false;
-			boolean su = false;
-			boolean de = false;
-			boolean battle = false;
+			boolean boatHepsiVuruldu = false;
+			boolean boat2HepsiVuruldu = false;
+			boolean submarineHepsiVuruldu = false;
+			boolean destroyerHepsiVuruldu = false;
+			boolean battleshipHepsiVuruldu = false;
 			while (devam) {
 
 				oyunTahtasi(15);
 				// atış kalmadı ve hedeflerın tamamı vurulmadı ise
-				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {
-					if (b2 == false || su == false || de == false || b1 == false || battle == false) {
+				if (kullanilanRocketSayisi >= leveldekiToplamRocketSayisi
+						&& kullanilanGunSayisi >= leveldekiToplamGunSayisi
+						&& kullanilanBombSayisi >= leveldekiToplambombSayisi) {// oyun biter.
+
+					if (boatHepsiVuruldu == false || boat2HepsiVuruldu == false || submarineHepsiVuruldu == false
+							|| destroyerHepsiVuruldu == false || battleshipHepsiVuruldu == false) {
 
 						devam = false;
 						System.out.println("No shot left. Game over");
 
-						uzerineyazma(username, level);// dosyaya kaydet
+						dosyayaKayıtEtme(username, level);// dosyaya kaydet
 						level = -1;// oyun biter
 						break;
 					}
 				}
-				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
-				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
-				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
+				System.out.println("0.Gun Shot: " + (leveldekiToplamGunSayisi - kullanilanGunSayisi));
+				System.out.println("1.Hand Bomb: " + (leveldekiToplambombSayisi - kullanilanBombSayisi));
+				System.out.println("2.Rocket: " + (leveldekiToplamRocketSayisi - kullanilanRocketSayisi));
 				System.out.print("Weapon and x,y coordinate:");
-				int name = scanner.nextInt();
-				int i1 = scanner.nextInt();
-				int j1 = scanner.nextInt();
+				int weaponName = scanner.nextInt();
+				int iKoordinati = scanner.nextInt();
+				int jKoordinati = scanner.nextInt();
 
-				if (j1 > 0) {
-					jeksi = j1 - 1;
-				} else {
-					jeksi = j1;
+				if (jKoordinati > 0) {
+					jBirEksi = jKoordinati - 1;
+				} else {// 0 ise bir eksigi olamaz
+					jBirEksi = jKoordinati;
 				}
-				if (j1 < 9) {
-					jarti = j1 + 1;
+				if (jKoordinati < 9) {
+					jBirArti = jKoordinati + 1;
 				} else {
-					jarti = j1;
+					jBirArti = jKoordinati;
 				}
-				if (i1 > 0) {
-					ieksi = i1 - 1;
+				if (iKoordinati > 0) {
+					iBirEksi = iKoordinati - 1;
 				} else {
-					ieksi = i1;
+					iBirEksi = iKoordinati;
 				}
-				if (i1 < 9) {
-					iarti = i1 + 1;
+				if (iKoordinati < 9) {
+					iBirArti = iKoordinati + 1;
 				} else {
-					iarti = i1;
+					iBirArti = iKoordinati;
 				}
 
-				if (name == 0) {
-					if (gun < gunsayisi) {// gun varmı
-						gridler[i1][j1].setVuruldu(true);
-						gun = gun + 1;
-						//System.out.println(gun);
-						if (gridler[i1][j1].getDeger() == 's') {
+				if (weaponName == 0) {
+					if (kullanilanGunSayisi < leveldekiToplamGunSayisi) {// gun varmı
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						kullanilanGunSayisi = kullanilanGunSayisi + 1;
+						// System.out.println(gun);
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 						} else {
 							System.out.println("İnvalid Hit");
@@ -278,15 +285,16 @@ public class Amiralbatti {
 					} else {
 						System.out.println("The Gun is over..");
 					}
-				} else if (name == 1) {
-					if (bomb < bombsayisi) {
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][j1].setVuruldu(true);
+				} else if (weaponName == 1) {
+					if (kullanilanBombSayisi < leveldekiToplambombSayisi) {
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
 
-						gridler[i1][jarti].setVuruldu(true);
-						bomb = bomb + 1;
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's') {
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						kullanilanBombSayisi = kullanilanBombSayisi + 1;
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -296,19 +304,21 @@ public class Amiralbatti {
 						System.out.println("The bomb is over.");
 					}
 
-				} else if (name == 2) {
-					if (rocket < rocketsayisi) {
-						gridler[i1][j1].setVuruldu(true);
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][jarti].setVuruldu(true);
-						gridler[iarti][j1].setVuruldu(true);
-						gridler[ieksi][j1].setVuruldu(true);
+				} else if (weaponName == 2) {
+					if (kullanilanRocketSayisi < leveldekiToplamRocketSayisi) {
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						gridler[iBirArti][jKoordinati].setVuruldu(true);
+						gridler[iBirEksi][jKoordinati].setVuruldu(true);
 
-						rocket = rocket + 1;
+						kullanilanRocketSayisi = kullanilanRocketSayisi + 1;
 
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's' || gridler[iarti][j1].getDeger() == 's'
-								|| gridler[ieksi][j1].getDeger() == 's') {
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's'
+								|| gridler[iBirArti][jKoordinati].getDeger() == 's'
+								|| gridler[iBirEksi][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -318,28 +328,30 @@ public class Amiralbatti {
 						System.out.println("The Rocket is over.");
 					}
 				}
-				if (battle == false) {
-					battle = bir.hepsi(gridler);
-				}
-				if (b1 == false) {
-					b1 = boat2.hepsi(gridler);
-				}
-				if (b2 == false) {
-					b2 = boat.hepsi(gridler);
-				}
-				if (su == false) {
-					su = sub.hepsi(gridler);
-				}
-				if (de == false) {
-					de = des.hepsi(gridler);
-				}
 
-				if (battle == true && b1 == true && b2 == true && su == true && de == true) {
+				if (boatHepsiVuruldu == false) {
+					boatHepsiVuruldu = boat.hepsiVuruldumu(gridler);// boat vuruldu ise x yapar.
+				}
+				if (boat2HepsiVuruldu == false) {
+					boat2HepsiVuruldu = boat2.hepsiVuruldumu(gridler);// boat vuruldu ise x yapar.
+				}
+				if (submarineHepsiVuruldu == false) {
+					submarineHepsiVuruldu = sub.hepsiVuruldumu(gridler);
+				}
+				if (destroyerHepsiVuruldu == false) {
+					destroyerHepsiVuruldu = des.hepsiVuruldumu(gridler);
+				}
+				if (battleshipHepsiVuruldu == false) {
+					battleshipHepsiVuruldu = bir.hepsiVuruldumu(gridler);
+				}
+				if (boatHepsiVuruldu == true && boat2HepsiVuruldu == true && submarineHepsiVuruldu == true
+						&& destroyerHepsiVuruldu == true && battleshipHepsiVuruldu == true) {
+
 					System.out.println("Congratulations. the level has increased.");
 					oyunTahtasi(15);
 					level = level + 1;
 
-					uzerineyazma(username, level);// kaydet
+					dosyayaKayıtEtme(username, level);// kaydet
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
 					if (acontinue.equals("q")) {
@@ -352,88 +364,94 @@ public class Amiralbatti {
 
 		}
 		while (level >= 5) { // hard level
-			Gridolustur(20);
-			Boat boat = new Boat(gridler);
-			Boat boat2 = new Boat(gridler);
-			Destroyer des = new Destroyer(gridler);
-			Submarine sub = new Submarine(gridler);
+			gridOlustur(20);
+			Boat boat = new Boat(gridler, 3);
+			Boat boat2 = new Boat(gridler, 3);
+			Destroyer des = new Destroyer(gridler, 3);
+			Submarine sub = new Submarine(gridler, 3);
+			Battleship bir = new Battleship(gridler, 3);
 
-			Battleship bir = new Battleship(gridler);
-			int gunsayisi = 12, rocketsayisi = 1, bombsayisi = 4;
-			int gun = 0, rocket = 0, bomb = 0;
-			int jeksi, ieksi, jarti, iarti;
+			int leveldekiToplamGunSayisi = 12, leveldekiToplamRocketSayisi = 1, leveldekiToplambombSayisi = 4;
+			int kullanilanGunSayisi = 0, kullanilanRocketSayisi = 0, kullanilanBombSayisi = 0;
+			int jBirEksi, iBirEksi, jBirArti, iBirArti;
 
-			boolean b1 = false;
-			boolean b2 = false;
-			boolean su = false;
-			boolean de = false;
-			boolean battle = false;
+			boolean boatHepsiVuruldu = false;
+			boolean boat2HepsiVuruldu = false;
+			boolean submarineHepsiVuruldu = false;
+			boolean destroyerHepsiVuruldu = false;
+			boolean battleshipHepsiVuruldu = false;
 
 			while (devam) {//////////////
 
 				oyunTahtasi(20);
 
-				if (rocket >= rocketsayisi && gun >= gunsayisi && bomb >= bombsayisi) {
-					if (b2 == false || su == false || de == false || b1 == false || battle == false) {
+				if (kullanilanRocketSayisi >= leveldekiToplamRocketSayisi
+						&& kullanilanGunSayisi >= leveldekiToplamGunSayisi
+						&& kullanilanBombSayisi >= leveldekiToplambombSayisi) {// oyun biter.
+
+					if (boatHepsiVuruldu == false || boat2HepsiVuruldu == false || submarineHepsiVuruldu == false
+							|| destroyerHepsiVuruldu == false || battleshipHepsiVuruldu == false) {
+
 						devam = false;
 						System.out.println("No shot left. Game over");
 
-						uzerineyazma(username, level);
-						level = -1;
+						dosyayaKayıtEtme(username, level);// dosyaya kaydet
+						level = -1;// oyun biter
 						break;
 					}
 				}
 
-				System.out.println("0.Gun Shot: " + (gunsayisi - gun));
-				System.out.println("1.Hand Bomb: " + (bombsayisi - bomb));
-				System.out.println("2.Rocket: " + (rocketsayisi - rocket));
-				System.out.print(" Weapon and x,y coordinate:");
-				int name = scanner.nextInt();
-				int i1 = scanner.nextInt();
-				int j1 = scanner.nextInt();
-				if (j1 > 0) {
-					jeksi = j1 - 1;
+				System.out.println("0.Gun Shot: " + (leveldekiToplamGunSayisi - kullanilanGunSayisi));
+				System.out.println("1.Hand Bomb: " + (leveldekiToplambombSayisi - kullanilanBombSayisi));
+				System.out.println("2.Rocket: " + (leveldekiToplamRocketSayisi - kullanilanRocketSayisi));
+				System.out.print("Weapon and x,y coordinate:");
+				int weaponName = scanner.nextInt();
+				int iKoordinati = scanner.nextInt();
+				int jKoordinati = scanner.nextInt();
+				if (jKoordinati > 0) {
+					jBirEksi = jKoordinati - 1;
 				} else {
-					jeksi = j1;
+					jBirEksi = jKoordinati;
 				}
-				if (j1 < 9) {
-					jarti = j1 + 1;
+				if (jKoordinati < 9) {
+					jBirArti = jKoordinati + 1;
 				} else {
-					jarti = j1;
+					jBirArti = jKoordinati;
 				}
-				if (i1 > 0) {
-					ieksi = i1 - 1;
+				if (iKoordinati > 0) {
+					iBirEksi = iKoordinati - 1;
 				} else {
-					ieksi = i1;
+					iBirEksi = iKoordinati;
 				}
-				if (i1 < 9) {
-					iarti = i1 + 1;
+				if (iKoordinati < 9) {
+					iBirArti = iKoordinati + 1;
 				} else {
-					iarti = i1;
+					iBirArti = iKoordinati;
 				}
 
-				if (name == 0) {
-					if (gun < gunsayisi) {
-						gridler[i1][j1].setVuruldu(true);
-						gun = gun + 1;
-						if (gridler[i1][j1].getDeger() == 's') {
+				if (weaponName == 0) {
+					if (kullanilanGunSayisi < leveldekiToplamGunSayisi) {// gun varmı
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						kullanilanGunSayisi = kullanilanGunSayisi + 1;
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
 							System.out.println("İnvalid Hit");
 						}
 					} else {
-						System.out.println("no gun left.");
+						System.out.println("The Gun is over..");
 					}
-				} else if (name == 1) {
-					if (bomb < bombsayisi) {
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][j1].setVuruldu(true);
+				} else if (weaponName == 1) {
+					if (kullanilanBombSayisi < leveldekiToplambombSayisi) {
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
 
-						gridler[i1][jarti].setVuruldu(true);
-						bomb = bomb + 1;
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's') {
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						kullanilanBombSayisi = kullanilanBombSayisi + 1;
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -442,19 +460,21 @@ public class Amiralbatti {
 					} else {
 						System.out.println("no bomb left");
 					}
-				} else if (name == 2) {
-					if (rocket < rocketsayisi) {
-						gridler[i1][j1].setVuruldu(true);
-						gridler[i1][jeksi].setVuruldu(true);
-						gridler[i1][jarti].setVuruldu(true);
-						gridler[iarti][j1].setVuruldu(true);
-						gridler[ieksi][j1].setVuruldu(true);
+				} else if (weaponName == 2) {
+					if (kullanilanRocketSayisi < leveldekiToplamRocketSayisi) {
+						gridler[iKoordinati][jKoordinati].setVuruldu(true);
+						gridler[iKoordinati][jBirEksi].setVuruldu(true);
+						gridler[iKoordinati][jBirArti].setVuruldu(true);
+						gridler[iBirArti][jKoordinati].setVuruldu(true);
+						gridler[iBirEksi][jKoordinati].setVuruldu(true);
 
-						rocket = rocket + 1;
+						kullanilanRocketSayisi = kullanilanRocketSayisi + 1;
 
-						if (gridler[i1][j1].getDeger() == 's' || gridler[i1][jeksi].getDeger() == 's'
-								|| gridler[i1][jarti].getDeger() == 's' || gridler[iarti][j1].getDeger() == 's'
-								|| gridler[ieksi][j1].getDeger() == 's') {
+						if (gridler[iKoordinati][jKoordinati].getDeger() == 's'
+								|| gridler[iKoordinati][jBirEksi].getDeger() == 's'
+								|| gridler[iKoordinati][jBirArti].getDeger() == 's'
+								|| gridler[iBirArti][jKoordinati].getDeger() == 's'
+								|| gridler[iBirEksi][jKoordinati].getDeger() == 's') {
 							System.out.println("Hit!");
 
 						} else {
@@ -465,29 +485,29 @@ public class Amiralbatti {
 					}
 
 				}
-				if (battle == false) {
-					battle = bir.hepsi(gridler);
+				if (boatHepsiVuruldu == false) {
+					boatHepsiVuruldu = boat.hepsiVuruldumu(gridler);// boat vuruldu ise x yapar.
 				}
-				if (b1 == false) {
-					b1 = boat2.hepsi(gridler);
+				if (boat2HepsiVuruldu == false) {
+					boat2HepsiVuruldu = boat2.hepsiVuruldumu(gridler);// boat vuruldu ise x yapar.
 				}
-				if (b2 == false) {
+				if (submarineHepsiVuruldu == false) {
+					submarineHepsiVuruldu = sub.hepsiVuruldumu(gridler);
+				}
+				if (destroyerHepsiVuruldu == false) {
+					destroyerHepsiVuruldu = des.hepsiVuruldumu(gridler);
+				}
+				if (battleshipHepsiVuruldu == false) {
+					battleshipHepsiVuruldu = bir.hepsiVuruldumu(gridler);
+				}
+				if (boatHepsiVuruldu == true && boat2HepsiVuruldu == true && submarineHepsiVuruldu == true
+						&& destroyerHepsiVuruldu == true && battleshipHepsiVuruldu == true) {
 
-					b2 = boat.hepsi(gridler);
-				}
-				if (su == false) {
-					su = sub.hepsi(gridler);
-				}
-				if (de == false) {
-					de = des.hepsi(gridler);
-				}
-
-				if (battle == true && b1 == true && b2 == true && su == true && de == true) {
 					System.out.println("Congratulations. the level has increased.");
-					oyunTahtasi(15);
+					oyunTahtasi(20);
 					level = level + 1;
 
-					uzerineyazma(username, level);
+					dosyayaKayıtEtme(username, level);
 					System.out.println("c.Continue level \nq.exit :");
 					String acontinue = scanner.next();
 					if (acontinue.equals("q")) {
@@ -501,17 +521,17 @@ public class Amiralbatti {
 
 	}
 
-	public static void uzerineyazma(String username, int level) {// kayıt etme
+	public static void dosyayaKayıtEtme(String username, int level) {// kayıt etme
 
-		int levelyazma = -1;
+		int levelYazma = -1;
 
 		String mode = "Hata";
 
-		Path wiki_path = Paths.get("", "AmiralBattiInfo.txt");
+		Path path = Paths.get("", "AmiralBattiInfo.txt");
 
 		Charset charset = Charset.forName("UTF-8");
 		try {
-			List<String> lines = Files.readAllLines(wiki_path, charset);
+			List<String> lines = Files.readAllLines(path, charset);
 
 			/*
 			 * for (String line : lines) { System.out.println(line);
@@ -520,13 +540,13 @@ public class Amiralbatti {
 			 */
 			if (level >= 0 && level < 2) {
 				mode = "Easy";
-				levelyazma = level;
+				levelYazma = level;
 			} else if (level >= 2 && level < 5) {
 				mode = "Normal";
-				levelyazma = (level % 5) - 2;
+				levelYazma = (level % 5) - 2;
 			} else if (level >= 5) {
 				mode = "Hard";
-				levelyazma = (level % 5);
+				levelYazma = (level % 5);
 			}
 
 			for (int i = 0; i < lines.size(); i++) {
@@ -535,7 +555,7 @@ public class Amiralbatti {
 
 					System.out.println("Saving...");
 
-					lines.set(i, username + " " + mode + "(" + levelyazma + ")");
+					lines.set(i, username + " " + mode + "(" + levelYazma + ")");
 					break;
 				}
 			}
@@ -548,7 +568,7 @@ public class Amiralbatti {
 
 	}
 
-	public static int okuma(String username) {// dosyadan okuma
+	public static int dosyadanOkuma(String username) {// dosyadan okuma
 
 		int level = -1;
 		try (Scanner scanner = new Scanner(new FileReader("AmiralBattiInfo.txt"))) {
@@ -567,7 +587,7 @@ public class Amiralbatti {
 					String part2 = parts[1].substring(0, 1);// cıktısı 1
 					int foo = Integer.parseInt(part2);
 
-					//System.out.println(modeokuma);
+					// System.out.println(modeokuma);
 
 					if (modeokuma.equals("Easy")) {
 						level = foo;
@@ -577,7 +597,7 @@ public class Amiralbatti {
 						level = foo + 5;
 					}
 
-					//System.out.println(level);
+					// System.out.println(level);
 					return level;
 
 				}
@@ -593,9 +613,9 @@ public class Amiralbatti {
 		return -1;
 	}
 
-	public static boolean kaydetme(String newusername) {// new user olusturma
+	public static boolean dosyayaKullaniciKaydetme(String newusername) {// new user olusturma
 
-		if (okuma(newusername) != -1) {
+		if (dosyadanOkuma(newusername) != -1) {
 			System.out.println("Already exists");
 			return false;
 		}

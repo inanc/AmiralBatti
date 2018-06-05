@@ -2,68 +2,68 @@ import java.util.Random;
 
 public class Submarine {
 
-	private int x1, y1, x2, y2;
+	private int xKoordinati1, yKoordinati1, xKoordinati2, yKoordinati2, xKoordinati1Random, yKoordinati1Random,
+			maxGridSayisi;
+
 	Random rnd = new Random();
-	public Submarine(Grid[][] gridler) {
 
-		
-		int ax1 = 110;
-		int ay1 = 110;
+	public Submarine(Grid[][] gridler, int mode) {
 
-		int x = rnd.nextInt(2);
-		// Aşagı yada yana dogru olması için random deger x
-
-		ax1 = rnd.nextInt(8);
-		ay1 = rnd.nextInt(8);
-		if (x == 1) {
-			// o noktada baska gemi varsa tekrar random deger al
-			while (ax1 > 8 || ay1 > 8 || gridler[ax1][ay1].getDeger() == 's'
-					|| gridler[ax1][ay1 + 1].getDeger() == 's') {
-				ax1 = rnd.nextInt(8);
-				ay1 = rnd.nextInt(8);
-			}
-
-			this.x1 = ax1;
-			this.y1 = ay1;
-			this.x2 = ax1;
-			this.y2 = ay1 + 1;
-		} else {
-			while (ax1 > 8 || ay1 > 8 || gridler[ax1][ay1].getDeger() == 's'
-					|| gridler[ax1 + 1][ay1].getDeger() == 's') {
-				ax1 = rnd.nextInt(8);
-				ay1 = rnd.nextInt(8);
-
-			}
-
-			this.x1 = ax1;
-			this.y1 = ay1;
-			this.x2 = ax1 + 1;
-			this.y2 = ay1;
+		if (mode == 1) {
+			maxGridSayisi = 9;
+		} else if (mode == 2) {
+			maxGridSayisi = 14;
+		} else if (mode == 3) {
+			maxGridSayisi = 19;
 		}
 
-		gridler[x1][y1].setDeger('s');
-		gridler[x2][y2].setDeger('s');
+		int randomDeger = rnd.nextInt(2);// 0 - 1
+		// Aşagı yada yana dogru olması için random deger x
+
+		xKoordinati1Random = rnd.nextInt(maxGridSayisi);
+		yKoordinati1Random = rnd.nextInt(maxGridSayisi);
+		if (randomDeger == 1) {
+			// o noktada baska gemi varsa tekrar random deger al
+			while (xKoordinati1Random > maxGridSayisi - 1 || yKoordinati1Random > maxGridSayisi - 1
+					|| gridler[xKoordinati1Random][yKoordinati1Random].getDeger() == 's'
+					|| gridler[xKoordinati1Random][yKoordinati1Random + 1].getDeger() == 's') {
+				xKoordinati1Random = rnd.nextInt(maxGridSayisi);
+				yKoordinati1Random = rnd.nextInt(maxGridSayisi);
+			}
+
+			this.xKoordinati1 = xKoordinati1Random;
+			this.yKoordinati1 = yKoordinati1Random;
+			this.xKoordinati2 = xKoordinati1Random;
+			this.yKoordinati2 = yKoordinati1Random + 1;
+		} else {
+			while (xKoordinati1Random > maxGridSayisi - 1 || yKoordinati1Random > maxGridSayisi - 1
+					|| gridler[xKoordinati1Random][yKoordinati1Random].getDeger() == 's'
+					|| gridler[xKoordinati1Random + 1][yKoordinati1Random].getDeger() == 's') {
+				xKoordinati1Random = rnd.nextInt(maxGridSayisi);
+				yKoordinati1Random = rnd.nextInt(maxGridSayisi);
+
+			}
+
+			this.xKoordinati1 = xKoordinati1Random;
+			this.yKoordinati1 = yKoordinati1Random;
+			this.xKoordinati2 = xKoordinati1Random + 1;
+			this.yKoordinati2 = yKoordinati1Random;
+		}
+
+		gridler[xKoordinati1][yKoordinati1].setDeger('s');
+		gridler[xKoordinati2][yKoordinati2].setDeger('s');
 
 	}
 
-	/*
-	 * public Submarine(int x1, int y1, int x2, int y2) { this.x1 = x1; this.y1 =
-	 * y1; this.x2 = x2; this.y2 = y2;
-	 * 
-	 * 
-	 * gridler[x1][y1].setDeger('s'); gridler[x2][y2].setDeger('s');
-	 * 
-	 * }
-	 */
-	public boolean hepsi(Grid[][] gridler) {
-		if (gridler[x1][y1].isVuruldu() == true && gridler[x2][y2].isVuruldu() == true) {
-			gridler[x1][y1].setDeger('x');
-			gridler[x2][y2].setDeger('x');
+	public boolean hepsiVuruldumu(Grid[][] gridler) {
+		if (gridler[xKoordinati1][yKoordinati1].isVuruldu() == true
+				&& gridler[xKoordinati2][yKoordinati2].isVuruldu() == true) {
+			gridler[xKoordinati1][yKoordinati1].setDeger('x');
+			gridler[xKoordinati2][yKoordinati2].setDeger('x');
 			System.out.println("You just sank a Submarine");
 			return true;
 		}
 		return false;
 	}
-
 
 }
